@@ -38,7 +38,7 @@ export function Navbar() {
           className="flex items-center gap-2.5 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-400"
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-lg ">
-            <img src="./src/assets/logo.png" alt="" />
+            <img src="./" alt="" />
           </span>
           <span className="text-lg font-bold tracking-tight text-slate-900">
             NEXORA
