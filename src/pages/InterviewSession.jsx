@@ -10,6 +10,8 @@ import VoiceOrb from "../components/VoiceOrb";
 import Transcript from "../components/Transcript";
 import { Navbar } from "../components/Navbar";
 
+import heroPng from "../components/assets/hero.png";
+
 export default function InterviewSession({
   client,
   startUrl,
@@ -356,7 +358,7 @@ export default function InterviewSession({
               {/* Animated Glowing Robot Avatar Frame */}
               <div className="relative w-32 h-32 mx-auto flex items-center justify-center">
                
-                  <img src="../src/components/assets/hero.png" alt="" />
+                  <img src={heroPng} alt="" />
                   {/* <span className="absolute -top-2 -right-2 bg-slate-900 text-white p-1.5 rounded-lg shadow-md border border-slate-800">
                     <FiCpu size={14} className="animate-spin [animation-duration:8s]" />
                   </span> */}
