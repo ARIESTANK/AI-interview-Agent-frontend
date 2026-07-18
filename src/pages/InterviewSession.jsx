@@ -39,15 +39,20 @@ export default function InterviewSession({
   const connecting =
     transportState === "connecting" || transportState === "authenticating";
 
-  const connected = transportState === "connected" || transportState === "ready";
+  const connected =
+    transportState === "connected" || transportState === "ready";
 
   /*
    * Speaking events
    */
   useRTVIClientEvent(RTVIEvent.BotStartedSpeaking, () => setBotSpeaking(true));
   useRTVIClientEvent(RTVIEvent.BotStoppedSpeaking, () => setBotSpeaking(false));
-  useRTVIClientEvent(RTVIEvent.UserStartedSpeaking, () => setUserSpeaking(true));
-  useRTVIClientEvent(RTVIEvent.UserStoppedSpeaking, () => setUserSpeaking(false));
+  useRTVIClientEvent(RTVIEvent.UserStartedSpeaking, () =>
+    setUserSpeaking(true)
+  );
+  useRTVIClientEvent(RTVIEvent.UserStoppedSpeaking, () =>
+    setUserSpeaking(false)
+  );
 
   /*
    * Transcript events
@@ -78,7 +83,9 @@ export default function InterviewSession({
    */
   useRTVIClientEvent(RTVIEvent.Error, (e) => {
     console.error("[RTVI error]", e);
-    setError(e?.message || "Something went wrong while connecting to the interviewer.");
+    setError(
+      e?.message || "Something went wrong while connecting to the interviewer."
+    );
   });
 
   /*
@@ -136,7 +143,9 @@ export default function InterviewSession({
       } catch (err) {
         console.error("[interview] connect failed:", err);
         if (!cancelled) {
-          setError(err?.message || "Could not connect to the interview server.");
+          setError(
+            err?.message || "Could not connect to the interview server."
+          );
         }
       }
     }
@@ -175,10 +184,16 @@ export default function InterviewSession({
       ]);
 
       if (!scopink) {
-        setError((prev) => prev ?? "Didn't receive a score from the interviewer in time.");
+        setError(
+          (prev) =>
+            prev ?? "Didn't receive a score from the interviewer in time."
+        );
       }
     } catch (err) {
-      setError((prev) => prev ?? (err.message || "Failed to request the interview score."));
+      setError(
+        (prev) =>
+          prev ?? (err.message || "Failed to request the interview score.")
+      );
     }
 
     await client.disconnect().catch(() => {});
@@ -210,9 +225,12 @@ export default function InterviewSession({
     return (
       <LayoutWrapper>
         <div className="flex flex-col items-center justify-center flex-1 text-center max-w-md mx-auto">
-          <h2 className="text-2xl font-bold text-slate-800 mb-2">Interview type not found</h2>
+          <h2 className="text-2xl font-bold text-slate-800 mb-2">
+            Interview type not found
+          </h2>
           <p className="text-slate-500 mb-6">
-            Invalid route parameters: <b className="text-pink-500 font-mono">{type}</b>
+            Invalid route parameters:{" "}
+            <b className="text-pink-500 font-mono">{type}</b>
           </p>
           <button
             className="w-full py-3 px-6 bg-pink-600 hover:bg-pink-500 text-white rounded-lg font-medium transition-colors shadow-lg shadow-pink-600/20"
@@ -243,7 +261,9 @@ export default function InterviewSession({
           <div className="w-full max-w-2xl bg-slate-50 border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm">
             <div className="flex flex-col items-center mb-8">
               <div className="w-24 h-24 rounded-full border-4 border-pink-500 flex flex-col items-center justify-center bg-pink-50 mb-4 shadow-sm">
-                <span className="text-3xl font-bold text-pink-600 leading-none">{result.score}</span>
+                <span className="text-3xl font-bold text-pink-600 leading-none">
+                  {result.score}
+                </span>
                 <span className="text-xs text-pink-500 mt-1">/10</span>
               </div>
               <p className="text-slate-600 text-center text-lg leading-relaxed max-w-lg">
@@ -260,7 +280,9 @@ export default function InterviewSession({
                   <ul className="space-y-2 text-sm text-slate-600">
                     {result.strengths.map((s, i) => (
                       <li key={i} className="flex items-start gap-2">
-                        <span className="text-emerald-500 select-none font-bold">✓</span>
+                        <span className="text-emerald-500 select-none font-bold">
+                          ✓
+                        </span>
                         <span>{s}</span>
                       </li>
                     ))}
@@ -276,7 +298,9 @@ export default function InterviewSession({
                   <ul className="space-y-2 text-sm text-slate-600">
                     {result.improvements.map((s, i) => (
                       <li key={i} className="flex items-start gap-2">
-                        <span className="text-amber-500 select-none font-bold">→</span>
+                        <span className="text-amber-500 select-none font-bold">
+                          →
+                        </span>
                         <span>{s}</span>
                       </li>
                     ))}
@@ -319,7 +343,9 @@ export default function InterviewSession({
           Live Session
         </span>
         <div className="flex items-center gap-4 text-sm">
-          <span className="font-medium text-slate-500">{interviewType.label} Interview</span>
+          <span className="font-medium text-slate-500">
+            {interviewType.label} Interview
+          </span>
           <span className="font-mono font-semibold bg-slate-50 px-2.5 py-1 border border-slate-200 rounded text-pink-600">
             {connected ? `${mm}:${ss}` : "--:--"}
           </span>
@@ -328,7 +354,6 @@ export default function InterviewSession({
 
       {/* Main Grid View */}
       <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-        
         {/* Left Side Column: Avatar Status Panel */}
         <div className="bg-white border border-slate-200 rounded-2xl p-6 flex flex-col justify-between shadow-sm">
           <div>
@@ -354,27 +379,25 @@ export default function InterviewSession({
               />
             </div> */}
 
-             <div className="text-center my-8">
+            <div className="text-center my-8">
               {/* Animated Glowing Robot Avatar Frame */}
               <div className="relative w-32 h-32 mx-auto flex items-center justify-center">
-               
-                  <img src={heroPng} alt="" />
-                  {/* <span className="absolute -top-2 -right-2 bg-slate-900 text-white p-1.5 rounded-lg shadow-md border border-slate-800">
+                <img src={heroPng} alt="" />
+                {/* <span className="absolute -top-2 -right-2 bg-slate-900 text-white p-1.5 rounded-lg shadow-md border border-slate-800">
                     <FiCpu size={14} className="animate-spin [animation-duration:8s]" />
                   </span> */}
-               
               </div>
-              
-             
-             
             </div>
 
-
-            
-
-            <h3 className="text-xl font-bold text-slate-800 text-center mb-1">AI Interviewer</h3>
+            <h3 className="text-xl font-bold text-slate-800 text-center mb-1">
+              AI Interviewer
+            </h3>
             <p className="text-slate-500 text-sm text-center leading-relaxed">
-              Conducting a live <span className="text-pink-600 font-medium">{interviewType.label}</span> interview via real-time audio pipeline.
+              Conducting a live{" "}
+              <span className="text-pink-600 font-medium">
+                {interviewType.label}
+              </span>{" "}
+              interview via real-time audio pipeline.
             </p>
           </div>
 
@@ -384,95 +407,109 @@ export default function InterviewSession({
             </h5>
             <ul className="space-y-2 text-sm text-slate-600">
               <li className="flex items-center gap-2">
-                <span className="text-pink-600 font-bold">✓</span> Conceptual Depth &amp; Accuracy
+                <span className="text-pink-600 font-bold">✓</span> Conceptual
+                Depth &amp; Accuracy
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-pink-600 font-bold">✓</span> Communication Clarity
+                <span className="text-pink-600 font-bold">✓</span> Communication
+                Clarity
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-pink-600 font-bold">✓</span> Problem-Solving Approach
+                <span className="text-pink-600 font-bold">✓</span>{" "}
+                Problem-Solving Approach
               </li>
             </ul>
           </div>
         </div>
 
         {/* Right Side Column: Transcripts & Console */}
-        {/* 1. Add 'relative' to the parent container so the floating button anchors to it */}
-<div className="relative md:col-span-2 bg-white border border-slate-200 rounded-2xl flex flex-col overflow-hidden shadow-sm">
-  
-  {/* Transcript Control Header */}
-  <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50/30">
-    <div>
-      <h3 className="text-lg font-bold text-slate-800">Interview Transcript</h3>
-      <p className="text-xs text-slate-500 mt-0.5">
-        Only the interviewer's direct inputs and prompts are recorded below.
-      </p>
-    </div>
-    <div className="flex items-center gap-2">
-      <button
-        className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-200 rounded-lg transition-all"
-        title="Restart session"
-        onClick={() => window.location.reload()}
-      >
-        ⟲
-      </button>
-      {/* Note: The 'End Session' button has been removed from here */}
-    </div>
-  </div>
+       
+        <div className="relative md:col-span-2 bg-white border border-slate-200 rounded-2xl flex flex-col overflow-hidden shadow-sm">
+          {/* Transcript Control Header */}
+          <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50/30">
+            <div>
+              <h3 className="text-lg font-bold text-slate-800">
+                Interview Transcript
+              </h3>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Only the interviewer's direct inputs and prompts are recorded
+                below.
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-200 rounded-lg transition-all"
+                title="Restart session"
+                onClick={() => window.location.reload()}
+              >
+                ⟲
+              </button>
+              {/* Note: The 'End Session' button has been removed from here */}
+            </div>
+          </div>
 
-  {/* Conditional Alerts */}
-  {error && (
-    <div className="m-4 p-4 bg-pink-50 border border-pink-200 text-pink-700 text-sm rounded-xl flex items-center justify-between" role="alert">
-      <div>
-        <strong className="font-semibold">Connection issue: </strong> {error}
-      </div>
-      <button className="text-xs underline font-semibold tracking-wide hover:text-pink-900 ml-4" onClick={() => window.location.reload()}>
-        Retry Hook
-      </button>
-    </div>
-  )}
+          {/* Conditional Alerts */}
+          {error && (
+            <div
+              className="m-4 p-4 bg-pink-50 border border-pink-200 text-pink-700 text-sm rounded-xl flex items-center justify-between"
+              role="alert"
+            >
+              <div>
+                <strong className="font-semibold">Connection issue: </strong>{" "}
+                {error}
+              </div>
+              <button
+                className="text-xs underline font-semibold tracking-wide hover:text-pink-900 ml-4"
+                onClick={() => window.location.reload()}
+              >
+                Retry Hook
+              </button>
+            </div>
+          )}
 
-  {!error && connecting && (
-    <div className="bg-slate-50/50 border-b border-slate-200 px-5 py-2.5 text-xs font-mono text-amber-700 animate-pulse">
-      [pipeline] establishing WebRTC transport connection hooks...
-    </div>
-  )}
+          {!error && connecting && (
+            <div className="bg-slate-50/50 border-b border-slate-200 px-5 py-2.5 text-xs font-mono text-amber-700 animate-pulse">
+              [pipeline] establishing WebRTC transport connection hooks...
+            </div>
+          )}
 
-  {!error && connected && (
-    <div className="bg-slate-50/50 border-b border-slate-200 px-5 py-2.5 text-xs font-mono text-pink-600">
-      {botSpeaking
-        ? "[stream] interviewer is active / speaking..."
-        : userSpeaking
-        ? "[stream] microphone capturing user voice..."
-        : "[stream] waiting for dialog turn..."}
-    </div>
-  )}
+          {!error && connected && (
+            <div className="bg-slate-50/50 border-b border-slate-200 px-5 py-2.5 text-xs font-mono text-pink-600">
+              {botSpeaking
+                ? "[stream] interviewer is active / speaking..."
+                : userSpeaking
+                ? "[stream] microphone capturing user voice..."
+                : "[stream] waiting for dialog turn..."}
+            </div>
+          )}
 
-  {/* Core Scrollable Content Stream */}
-  <div className="flex-1 overflow-y-auto p-5 bg-white">
-    <Transcript messages={messages} />
-  </div>
+          {/* Core Scrollable Content Stream */}
+          <div className="flex-1 overflow-y-auto p-5 bg-white">
+            <Transcript messages={messages} />
+          </div>
 
-  {/* Footer Interactive States */}
-  {userSpeaking && (
-    <div className="p-4 bg-pink-50/30 border-t border-slate-200 flex items-center gap-3 text-sm text-pink-700">
-      <span className="w-2.5 h-2.5 rounded-full bg-pink-500 animate-ping" />
-      <span className="font-medium">Microphone active — speaking to bot</span>
-    </div>
-  )}
+          {/* Footer Interactive States */}
+          {userSpeaking && (
+            <div className="p-4 bg-pink-50/30 border-t border-slate-200 flex items-center gap-3 text-sm text-pink-700">
+              <span className="w-2.5 h-2.5 rounded-full bg-pink-500 animate-ping" />
+              <span className="font-medium">
+                Microphone active — speaking to bot
+              </span>
+            </div>
+          )}
 
-  {/* 2. Floating 'End Session' Button added at the bottom right */}
-  <button
-    className="absolute bottom-5 right-5 z-10 px-5 py-3 bg-pink-600 hover:bg-pink-500 disabled:bg-pink-200 text-white disabled:text-pink-400 font-semibold text-sm rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
-    onClick={handleEnd}
-    disabled={ending}
-  >
-    {ending && (
-      <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-    )}
-    {ending ? "Scoring…" : "End Session"}
-  </button>
-</div>
+          {/* 2. Floating 'End Session' Button added at the bottom right */}
+          <button
+            className="absolute bottom-5 right-5 z-10 px-5 py-3 bg-pink-600 hover:bg-pink-500 disabled:bg-pink-200 text-white disabled:text-pink-400 font-semibold text-sm rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
+            onClick={handleEnd}
+            disabled={ending}
+          >
+            {ending && (
+              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            )}
+            {ending ? "Scoring…" : "End Session"}
+          </button>
+        </div>
       </div>
     </LayoutWrapper>
   );
