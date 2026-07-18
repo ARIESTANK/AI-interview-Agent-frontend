@@ -9,6 +9,7 @@ import { RTVIEvent } from "@pipecat-ai/client-js";
 import VoiceOrb from "../components/VoiceOrb";
 import Transcript from "../components/Transcript";
 import "../styles/app.css";
+import { Navbar } from "../components/Navbar";
 export default function InterviewSession({
   client,
   startUrl,
@@ -304,6 +305,7 @@ const handleEnd = useCallback(async () => {
 
   return (
     <div className="session-screen">
+      <Navbar/>
       <div className="session-topbar">
         <span className="live-badge">
           <span className={`live-dot ${connected ? "" : "live-dot--muted"}`} />
