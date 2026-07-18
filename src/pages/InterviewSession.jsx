@@ -8,7 +8,7 @@ import { RTVIEvent } from "@pipecat-ai/client-js";
 
 import VoiceOrb from "../components/VoiceOrb";
 import Transcript from "../components/Transcript";
-
+import "../styles/app.css";
 export default function InterviewSession({
   client,
   startUrl,
