@@ -175,28 +175,45 @@ export default function InterviewSession({
    * its reply (capped at 12s so a slow/failed score never traps the user),
    * then disconnect. If scoring fails or times out we still let them exit.
    */
-  const handleEnd = useCallback(async () => {
-    setEnding(true);
-    clearInterval(timerRef.current);
+const handleEnd = useCallback(async () => {
+  setEnding(true);
+  clearInterval(timerRef.current);
 
-    try {
-      const scorePromise = new Promise((resolve) => {
-        scoreResolverRef.current = resolve;
-      });
+  try {
+    const scorePromise = new Promise((resolve) => {
+      scoreResolverRef.current = resolve;
+    });
 
-      await client.sendClientMessage?.("request_score");
-
-      await Promise.race([
-        scorePromise,
-        new Promise((resolve) => setTimeout(resolve, 12000)),
-      ]);
-    } catch (err) {
-      console.error("[interview] failed to request score:", err);
+    if (typeof client.sendClientMessage !== "function") {
+      console.error(
+        "[interview] client.sendClientMessage is not a function on this client instance. Available methods:",
+        Object.getOwnPropertyNames(Object.getPrototypeOf(client))
+      );
+      throw new Error(
+        "This client build doesn't expose sendClientMessage — can't request a score."
+      );
     }
 
-    await client.disconnect().catch(() => {});
-    setEnding(false);
-  }, [client]);
+    console.log("[interview] sending request_score");
+    client.sendClientMessage("request_score");
+
+    const scored = await Promise.race([
+      scorePromise.then(() => true),
+      new Promise((resolve) => setTimeout(() => resolve(false), 12000)),
+    ]);
+
+    if (!scored) {
+      console.warn("[interview] no interview_score message received within 12s");
+      setError((prev) => prev ?? "Didn't receive a score from the interviewer in time.");
+    }
+  } catch (err) {
+    console.error("[interview] failed to request score:", err);
+    setError((prev) => prev ?? (err.message || "Failed to request the interview score."));
+  }
+
+  await client.disconnect().catch(() => {});
+  setEnding(false);
+}, [client]);
 
   const handleExit = useCallback(() => {
     setResult(null);
