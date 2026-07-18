@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Routes,
   Route,
+  useNavigate,
 } from "react-router-dom";
 
 import { PipecatClient } from "@pipecat-ai/client-js";
@@ -18,13 +19,16 @@ const START_URL =
   import.meta.env.VITE_PIPECAT_START_URL ||
   "https://charlene-cutaneous-nonextrinsically.ngrok-free.dev/start";
 
+// IDs must exactly match the backend's FIELDS/TOPIC_HINTS keys
+// (see get_field_config in the Python config) or the backend will
+// silently fall back to DEFAULT_FIELD.
 export const INTERVIEW_TYPES = [
   {
-    id: "generaltech",
+    id: "tech",
     label: "General Tech",
   },
   {
-    id: "webdevelopment",
+    id: "web-dev",
     label: "Web Development",
   },
   {
@@ -41,34 +45,37 @@ function createClient() {
   });
 }
 
+function AppRoutes({ client }) {
+  const navigate = useNavigate();
+
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={<InterviewSelect types={INTERVIEW_TYPES} />}
+      />
+
+      <Route
+        path="/interview/:type"
+        element={
+          <InterviewSession
+            client={client}
+            startUrl={START_URL}
+            interviewTypes={INTERVIEW_TYPES}
+            onExit={() => navigate("/")}
+          />
+        }
+      />
+    </Routes>
+  );
+}
+
 export default function App() {
   const [client] = useState(createClient);
 
   return (
     <PipecatClientProvider client={client}>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <InterviewSelect
-              types={INTERVIEW_TYPES}
-            />
-          }
-        />
-
-        <Route
-          path="/interview/:type"
-          element={
-            <InterviewSession
-              client={client}
-          startUrl={START_URL}
-          interviewTypes={INTERVIEW_TYPES}
-          onExit={() => navigate("/")}
-            />
-          }
-        />
-      </Routes>
-
+      <AppRoutes client={client} />
       <PipecatClientAudio />
     </PipecatClientProvider>
   );
