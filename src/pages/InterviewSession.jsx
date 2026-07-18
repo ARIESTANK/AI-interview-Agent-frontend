@@ -397,75 +397,82 @@ export default function InterviewSession({
         </div>
 
         {/* Right Side Column: Transcripts & Console */}
-        <div className="md:col-span-2 bg-white border border-slate-200 rounded-2xl flex flex-col overflow-hidden shadow-sm">
-          
-          {/* Transcript Control Header */}
-          <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50/30">
-            <div>
-              <h3 className="text-lg font-bold text-slate-800">Interview Transcript</h3>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Only the interviewer's direct inputs and prompts are recorded below.
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-200 rounded-lg transition-all"
-                title="Restart session"
-                onClick={() => window.location.reload()}
-              >
-                ⟲
-              </button>
-              <button
-                className="px-4 py-2 bg-pink-600 hover:bg-pink-400 disabled:bg-pink-200 text-white disabled:text-pink-400 font-medium text-sm rounded-lg shadow-sm transition-colors"
-                onClick={handleEnd}
-                disabled={ending}
-              >
-                {ending ? "Scoring…" : "End Session"}
-              </button>
-            </div>
-          </div>
+        {/* 1. Add 'relative' to the parent container so the floating button anchors to it */}
+<div className="relative md:col-span-2 bg-white border border-slate-200 rounded-2xl flex flex-col overflow-hidden shadow-sm">
+  
+  {/* Transcript Control Header */}
+  <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50/30">
+    <div>
+      <h3 className="text-lg font-bold text-slate-800">Interview Transcript</h3>
+      <p className="text-xs text-slate-500 mt-0.5">
+        Only the interviewer's direct inputs and prompts are recorded below.
+      </p>
+    </div>
+    <div className="flex items-center gap-2">
+      <button
+        className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-200 rounded-lg transition-all"
+        title="Restart session"
+        onClick={() => window.location.reload()}
+      >
+        ⟲
+      </button>
+      {/* Note: The 'End Session' button has been removed from here */}
+    </div>
+  </div>
 
-          {/* Conditional Alerts */}
-          {error && (
-            <div className="m-4 p-4 bg-pink-50 border border-pink-200 text-pink-700 text-sm rounded-xl flex items-center justify-between" role="alert">
-              <div>
-                <strong className="font-semibold">Connection issue: </strong> {error}
-              </div>
-              <button className="text-xs underline font-semibold tracking-wide hover:text-pink-900 ml-4" onClick={() => window.location.reload()}>
-                Retry Hook
-              </button>
-            </div>
-          )}
+  {/* Conditional Alerts */}
+  {error && (
+    <div className="m-4 p-4 bg-pink-50 border border-pink-200 text-pink-700 text-sm rounded-xl flex items-center justify-between" role="alert">
+      <div>
+        <strong className="font-semibold">Connection issue: </strong> {error}
+      </div>
+      <button className="text-xs underline font-semibold tracking-wide hover:text-pink-900 ml-4" onClick={() => window.location.reload()}>
+        Retry Hook
+      </button>
+    </div>
+  )}
 
-          {!error && connecting && (
-            <div className="bg-slate-50/50 border-b border-slate-200 px-5 py-2.5 text-xs font-mono text-amber-700 animate-pulse">
-              [pipeline] establishing WebRTC transport connection hooks...
-            </div>
-          )}
+  {!error && connecting && (
+    <div className="bg-slate-50/50 border-b border-slate-200 px-5 py-2.5 text-xs font-mono text-amber-700 animate-pulse">
+      [pipeline] establishing WebRTC transport connection hooks...
+    </div>
+  )}
 
-          {!error && connected && (
-            <div className="bg-slate-50/50 border-b border-slate-200 px-5 py-2.5 text-xs font-mono text-pink-600">
-              {botSpeaking
-                ? "[stream] interviewer is active / speaking..."
-                : userSpeaking
-                ? "[stream] microphone capturing user voice..."
-                : "[stream] waiting for dialog turn..."}
-            </div>
-          )}
+  {!error && connected && (
+    <div className="bg-slate-50/50 border-b border-slate-200 px-5 py-2.5 text-xs font-mono text-pink-600">
+      {botSpeaking
+        ? "[stream] interviewer is active / speaking..."
+        : userSpeaking
+        ? "[stream] microphone capturing user voice..."
+        : "[stream] waiting for dialog turn..."}
+    </div>
+  )}
 
-          {/* Core Scrollable Content Stream */}
-          <div className="flex-1 overflow-y-auto p-5 bg-white">
-            <Transcript messages={messages} />
-          </div>
+  {/* Core Scrollable Content Stream */}
+  <div className="flex-1 overflow-y-auto p-5 bg-white">
+    <Transcript messages={messages} />
+  </div>
 
-          {/* Footer Interactive States */}
-          {userSpeaking && (
-            <div className="p-4 bg-pink-50/30 border-t border-slate-200 flex items-center gap-3 text-sm text-pink-700">
-              <span className="w-2.5 h-2.5 rounded-full bg-pink-500 animate-ping" />
-              <span className="font-medium">Microphone active — speaking to bot</span>
-            </div>
-          )}
-        </div>
+  {/* Footer Interactive States */}
+  {userSpeaking && (
+    <div className="p-4 bg-pink-50/30 border-t border-slate-200 flex items-center gap-3 text-sm text-pink-700">
+      <span className="w-2.5 h-2.5 rounded-full bg-pink-500 animate-ping" />
+      <span className="font-medium">Microphone active — speaking to bot</span>
+    </div>
+  )}
+
+  {/* 2. Floating 'End Session' Button added at the bottom right */}
+  <button
+    className="absolute bottom-5 right-5 z-10 px-5 py-3 bg-pink-600 hover:bg-pink-500 disabled:bg-pink-200 text-white disabled:text-pink-400 font-semibold text-sm rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
+    onClick={handleEnd}
+    disabled={ending}
+  >
+    {ending && (
+      <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+    )}
+    {ending ? "Scoring…" : "End Session"}
+  </button>
+</div>
       </div>
     </LayoutWrapper>
   );
