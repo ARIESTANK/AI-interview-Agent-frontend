@@ -23,14 +23,26 @@ const START_URL =
 // (see get_field_config in the Python config) or the backend will
 // silently fall back to DEFAULT_FIELD.
 export const INTERVIEW_TYPES = [
-  { id: "tech", label: "General Tech" }, 
-  { id: "web-dev", label: "Web Development" }, 
-  { id: "networking", label: "Networking" }, 
-  { id: "data-science", label: "Data Science" }, 
-  { id: "product-management", label: "Product Management" }, 
-  { id: "ux-design", label: "UX Design" }, 
-  { id: "devops", label: "DevOps" }, 
-  { id: "cybersecurity", label: "Cybersecurity" },
+  { id: "frontend_developer", label: "Frontend Developer" },
+  { id: "backend_engineer", label: "Backend Engineer" },
+  { id: "full_stack_developer", label: "Full Stack Developer" },
+  { id: "data_analyst", label: "Data Analyst" },
+  { id: "data_engineer", label: "Data Engineer" },
+  { id: "qa_automation_engineer", label: "QA Automation Engineer" },
+  { id: "product_designer", label: "Product Designer" },
+  { id: "devops_engineer", label: "DevOps Engineer" },
+  { id: "mobile_developer", label: "Mobile Developer" },
+  { id: "junior_software_engineer", label: "Junior Software Engineer" },
+  { id: "machine_learning_engineer", label: "Machine Learning Engineer" },
+  { id: "cloud_security_engineer", label: "Cloud Security Engineer" },
+  { id: "android_developer", label: "Android Developer" },
+  { id: "technical_writer", label: "Technical Writer" },
+  { id: "solutions_architect", label: "Solutions Architect" },
+  { id: "ruby_on_rails_developer", label: "Ruby on Rails Developer" },
+  { id: "embedded_systems_engineer", label: "Embedded Systems Engineer" },
+  { id: "product_manager", label: "Product Manager" },
+  { id: "support_engineer", label: "Support Engineer" },
+  { id: "ai_application_developer", label: "AI Application Developer" },
 ];
 
 function createClient() {
